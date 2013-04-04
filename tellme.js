@@ -1,3 +1,4 @@
+
 var situation = {};
 var currentN = 0;
 
@@ -5,6 +6,17 @@ var upKey = function(key,val) {
 	situation[key]=val;
 	console.log("UPDATE: "+key+"="+val);
 }
+
+var templateUrl = "tellme_story.html";
+
+$(document).ready( function() {
+	$("#histoire").click( function(e) {
+		currentN+=1;
+		loadTemplate(true,templateUrl);
+	});
+	loadTemplate(false,templateUrl);
+});
+
 
 // handlers update-create variables
 Handlebars.registerHelper('up', function(param,val) {
@@ -58,31 +70,33 @@ var clicOn = function(unik,key) {
 	});
 
 	// reload page
-	loadTemplate();
+	loadTemplate(false,templateUrl);
 };
 
-var loadTemplate = function(newPage) {
+var loadTemplate = function(newPage,templateUrl) {
 	// use templatesource from this file
 	//var source = $("#entry-template").html();
 	// or load templatesource using ajax
-	console.log("... loading AJAX template");
+	console.log("... loading AJAX template: "+templateUrl);
 	$.ajax({
-       url: "template.htm",
+       url: templateUrl,
        dataType: 'html',
        cache: true,
        error: function(data) {
-      	console.log("error:"+data.status);
+      		console.log("error:"+data.status);
        },
        success: function(data) {
        		var parts = $("div",data);
 			var part = parts.eq(currentN%parts.length);
+			console.log("currentN:"+currentN);
+			console.log("success:"+part.html());
 			//var template  = Handlebars.compile(data);
 			var template  = Handlebars.compile(part.html());
 			var html = template(situation).replace(/@/g, "</br>");
-			if(newPage) $('#histoire').css("opacity",0);
+			//if(newPage) $('#histoire').css("opacity",0);
 			$("#cible").html(html);
-			if(newPage) $('#histoire').animate({"opacity":1},500);
-			$("#photo img").attr("src","images/tm_0"+currentN+".jpg")
+			//if(newPage) $('#histoire').animate({"opacity":1},500);
+			//$("#photo img").attr("src","images/tm_0"+currentN+".jpg")
 /*
 			var klist = Object.keys(situation).map(function(key) {
 				return '<li><a>' + key + "=" + situation[key] + "</a></li>";
@@ -92,11 +106,3 @@ var loadTemplate = function(newPage) {
        }
    }); 
 };
-
-$(document).ready( function() {
-	$("body").click( function(e) {
-		currentN+=1;
-		loadTemplate(true);
-	});
-	loadTemplate();
-});
