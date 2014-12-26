@@ -7,7 +7,7 @@ var upKey = function(key,val) {
 	console.log("UPDATE: "+key+"="+val);
 }
 
-var templateUrl = "tellme_story.html";
+var templateUrl = "data/example.html";
 
 $(document).ready( function() {
 	$("#histoire").click( function(e) {
