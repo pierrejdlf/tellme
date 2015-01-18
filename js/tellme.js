@@ -43,7 +43,7 @@ Handlebars.registerHelper('ch', function(options) {
 	var links = (Object.keys(options.hash).map(function(key) {
 		var l = '<a href="#" id="'+key+'" class="choice '+unik+'" '
 		l+= firstruekey==key ? 'style="display:visible;"' : 'style="display:none;"';
-		l+= ' onclick=\'clicOn(".'+unik+'","'+key+'")\'>'+options.hash[key]+'</a>';
+		l+= ' onclick=\'clicOn(".'+unik+'","'+key+'"); event.stopPropagation();\'>'+options.hash[key]+'</a>';
 		return l;
 		})).join(" ");
 	return new Handlebars.SafeString(links);
